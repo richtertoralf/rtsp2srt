@@ -1,6 +1,10 @@
 # rtsp2srt
 Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zur StreamBox senden.
 Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, also unserer StreamBox auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden.
+
+![rtsp2srt](ffmpeg-srt.png "Streamtransport") 
+Streamumwandlung und Streamtransport 
+
 ## Installation auf dem Raspberry Pi (Raspian OS Buster)
 ```
 sudo apt-get update  
