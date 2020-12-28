@@ -35,6 +35,7 @@ sudo apt install \
   pkg-config \  
   texinfo \  
   wget \  
+  git \  
   yasm \  
   zlib1g-dev \  
   tclsh \  
