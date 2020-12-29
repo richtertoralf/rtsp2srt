@@ -9,6 +9,7 @@ Streamumwandlung und Streamtransport
 FFmpeg unterstützt inzwischen standartgemäß das SRT-Protokoll. 
 In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch die srt-Bibliothek **libsrt**. Deshalb muss (Stand 12/2020) FFmpeg selbst kompiliert werden und dabei z.B. das Konfigurationsflag `--enable-libsrt` gesetzt werden.  
 > Wenn **Raspberry Pi OS with desktop** als Betriebssystem installiert wurde, ist FFmpeg (ohne SRT), als Basis z.B. für den VLC-Player bereits in der Grundinstallation enthalten und sollte deinstalliert werden. Besser ist deshalb die Installation von **Raspberry Pi OS Lite ohne Anwendungsprogramme und ohne GUI** und die nachträgliche Installation aller benötigten Programmpakete!  
+
 VLC-Player inklusive FFmpeg entfernen:  
 ```
 sudo apt purge vlc* && sudo apt purge ffmpeg*  
