@@ -57,18 +57,21 @@ sudo make install
 cd /home/pi/ffmpeg_sources  
 sudo git clone https://github.com/FFmpeg/FFmpeg.git  
 cd FFmpeg  
-PATH="$HOME/bin:$PATH"
-# sudo export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
-sudo ./configure --arch=armel --target-os=linux --enable-gpl --enable-libmp3lame --enable-libfdk-aac --enable-libfreetype --enable-libx264 --enable-libx265  --enable-omx --enable-omx-rpi --enable-nonfree --enable-mmal --enable-libsrt
-sudo make
-sudo make install
+PATH="$HOME/bin:$PATH"  
+# sudo export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"  
+sudo ./configure --extra-ldflags="-latomic" --arch=armel --target-os=linux --enable-gpl --enable-libmp3lame --enable-libfdk-aac --enable-libfreetype --enable-libx264 --enable-libx265  --enable-omx --enable-omx-rpi --enable-nonfree --enable-mmal --enable-libsrt  
+sudo make  
+sudo make install  
+source ~/.profile  
+sudo reboot
 ```  
 
 ### testen ###
 ```
 ffmpeg -version	(Version anzeigen)  
 ffmpeg -formats	(verfügbare Formate anzeigen)  
-ffmpeg -codecs	(verfügbare Codecs anzeigen)  
+ffmpeg -codecs	(verfügbare Codecs anzeigen) 
+ffmpeg -protocols
 ```  
 ffmpeg ist jetzt nicht installiert, aber kompiliert und kann im aktuellen Arbeitsverzeichnis ausgeführt werden. 
 Das müsste jetzt /home/pi/ffmpeg sein.
