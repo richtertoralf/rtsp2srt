@@ -28,7 +28,7 @@ sudo apt update
 sudo apt install autoconf automake build-essential cmake pkg-config texinfo wget git yasm nasm tcl tclsh libtool libva-dev libass-dev libfreetype6-dev libgnutls28-dev libsdl2-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev zlib1g-dev libssl-dev libx264-dev libx265-dev libnuma-dev libx265-doc libvpx-dev libmp3lame-dev libopus-dev  
 ``` 
 (Nicht alle der obigen Pakete werden für unser kleines Projekt benötigt. Ich weiß allerdings nicht, welche entbehrlich sind ;-)  
-Beim Raspberry Pi sind z.B. das Audio-Paket libfdk-aac noch nicht mit `apt` installierbar und müssen extra kompiliert werden.  
+Beim Raspberry Pi sind z.B. das Audio-Paket libfdk-aac noch nicht mit `apt` installierbar und muss extra kompiliert werden.  
 [Infos hier im FFmpeg CompilitionGuide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu "FFmpeg CompilitionGuide")  
 ```
 cd /home/pi/ffmpeg_sources  
@@ -41,7 +41,7 @@ make
 sudo make install  
 ```  
 
-### SRT von Haivision downloaden, kompilieren und installieren (inklusive z.B. srt-live-transmit): ###
+### SRT von Haivision downloaden, kompilieren und installieren (inklusive srt-live-transmit): ###
 ```
 mkdir -p /home/pi/ffmpeg_sources
 cd /home/pi/ffmpeg_sources
@@ -52,7 +52,7 @@ sudo ./configure
 sudo make  
 sudo make install 
 ```  
-### FFmpeg downloaden, konfigurieren (incl. SRT einbinden), kompilieren und installieren: ###
+### FFmpeg downloaden, konfigurieren (inkl. SRT-Bibliothek einbinden), kompilieren und installieren: ###
 ```
 cd /home/pi/ffmpeg_sources  
 sudo git clone https://github.com/FFmpeg/FFmpeg.git  
@@ -71,22 +71,20 @@ sudo reboot
 ffmpeg -version	(Version anzeigen)  
 ffmpeg -formats	(verfügbare Formate anzeigen)  
 ffmpeg -codecs	(verfügbare Codecs anzeigen) 
-ffmpeg -protocols
+ffmpeg -protocols (verfügbare Protokolle anzeigen)
 ```  
-ffmpeg ist jetzt nicht installiert, aber kompiliert und kann im aktuellen Arbeitsverzeichnis ausgeführt werden. 
-Das müsste jetzt /home/pi/ffmpeg sein.
 
-Aufruf mit:
+Aufruf auf dem Raspi mit z.B.:
 ```
 ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'
 ```
 
-## Installation auf der StreamBox (Ubuntu 20.04 LTS)
+## Installation auf der StreamBox (Ubuntu 20.04 LTS) ##
 
-## Testen
-### Stream auf dem Raspi empfangen und senden
-- `ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'
-`   
+## Testen ##
+### rtsp-Stream auf dem Raspi empfangen und als SRT-Stream senden ###
+- `ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'`   
+
 ### auf der StreamBox
 - `srt-live-transmit 'srt://172.16.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
 - in OBS eine Medienquelle einfügen mit der URL: udp://localhost:50052  
