@@ -7,69 +7,69 @@ Streamumwandlung und Streamtransport
 
 ## Installation auf dem Raspberry Pi (Raspian OS Buster)
 FFmpeg unterstützt inzwischen standartgemäß das SRT-Protokoll. 
-In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch die srt-Bibliothek **libsrt**. Deshalb muss (Stand 12/2020) FFmpeg selbst kompiliert werden und dabei das Konfigurationsflag `--enable-libsrt` gesetzt werden.  
-Die Installation der Quellpakete setzt die folgenden Schritte voraus:  
+In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch die srt-Bibliothek **libsrt**. Deshalb muss (Stand 12/2020) FFmpeg selbst kompiliert werden und dabei z.B. das Konfigurationsflag `--enable-libsrt` gesetzt werden.  
+> Wenn **Raspberry Pi OS with desktop** als Betriebssystem installiert wurde, ist FFmpeg (ohne SRT), als Basis z.B. für den VLC-Player bereits in der Grundinstallation enthalten und sollte deinstalliert werden. Besser ist deshalb die Installation von **Raspberry Pi OS Lite ohne Anwendungsprogramme und ohne GUI** und die nachträgliche Installation aller benötigten Programmpakete!  
+VLC-Player inklusive FFmpeg entfernen:  
+```
+sudo apt purge vlc* && sudo apt purge ffmpeg*  
+sudo apt autoremove  
+```
+und VLC-Symbol aus Startmenu entfernen: `sudo rm /usr/share/raspi-ui-overrides/applications/vlc.desktop`  
+
+Die Installation der Quellpakete für FFmpeg inklusive SRT setzt die folgenden Schritte voraus:  
+- Bereitstellung aller notwendigen Tools und Bibliotheken, also Download der Abhängigkeiten (Dependencies)
 - Konfiguration (mit einem Konfigurationsskript, z.B. `./configure`)  
 - Zusammenstellung der Pakete/Bibliotheken/Binärdateien (`make`)  
 - Installation (`sudo make install`)  
 
+### Download und Installation der Abhängigkeiten ###
 ```
 sudo apt update  
-sudo apt install \  
-  autoconf \  
-  automake \  
-  build-essential \  
-  cmake \  
-  git-core \  
-  libass-dev \  
-  libfreetype6-dev \  
-  libgnutls28-dev \  
-  libsdl2-dev \  
-  libtool \  
-  libva-dev \  
-  libvdpau-dev \  
-  libvorbis-dev \  
-  libxcb1-dev \  
-  libxcb-shm0-dev \  
-  libxcb-xfixes0-dev \  
-  pkg-config \  
-  texinfo \  
-  wget \  
-  git \  
-  yasm \  
-  zlib1g-dev \  
-  tclsh \  
-  libssl-dev \  
-  nasm \  
-  libx264-dev \  
-  libx265-dev  \
-  libnuma-dev \  
-  libx265.doc \  
-  libvpx-dev \  
-  libmp3lame \  
-  libopus-dev \  
-```  
-Damit wurden alle Pakete, die zum Kompilieren notwendig sind, geholt.
-Beim Raspberry Pi sind z.B. das Audio-Paket libfdk-aac und die AV1 Encoder/Decoder noch nicht mit `apt` installierbar und müssten, wenn benötigt, extra kompiliert werden. [Infos hier im FFmpeg CompilitionGuide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu "FFmpeg CompilitionGuide")  
+sudo apt install autoconf automake build-essential cmake pkg-config texinfo wget git yasm nasm tcl tclsh libtool libva-dev libass-dev libfreetype6-dev libgnutls28-dev libsdl2-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev zlib1g-dev libssl-dev libx264-dev libx265-dev libnuma-dev libx265-doc libvpx-dev libmp3lame-dev libopus-dev  
+``` 
+(Nicht alle der obigen Pakete werden für unser kleines Projekt benötigt. Ich weiß allerdings nicht, welche entbehrlich sind ;-)  
+Beim Raspberry Pi sind z.B. das Audio-Paket libfdk-aac noch nicht mit `apt` installierbar und müssen extra kompiliert werden.  
+[Infos hier im FFmpeg CompilitionGuide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu "FFmpeg CompilitionGuide")  
 ```
-cd /home/pi  
+cd /home/pi/ffmpeg_sources  
+git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstorsjo/fdk-aac  
+PATH="$HOME/bin:$PATH"  
+cd fdk-aac  
+autoreconf -fiv  
+./configure  
+make  
+sudo make install  
+```  
+
+### SRT von Haivision downloaden, kompilieren und installieren (inklusive z.B. srt-live-transmit): ###
+```
+mkdir -p /home/pi/ffmpeg_sources
+cd /home/pi/ffmpeg_sources
 sudo git clone https://github.com/Haivision/srt  
 cd srt  
+PATH="$HOME/bin:$PATH"
 sudo ./configure  
 sudo make  
-sudo make install  
-cd /home/pi  
-git clone https://github.com/FFmpeg/FFmpeg.git  
-cd FFmpeg  
-sudo -s  
-export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
-./configure --arch=armel --target-os=linux --enable-gpl --enable-omx --enable-omx-rpi --enable-nonfree --enable-mmal --enable-libsrt
-# eigentlich müsste auch Folgendes eingeschaltet werden: --enable-libx264 --enable-libx265 --enable-libx265  
-# funktioniert aber nicht ???
-make
-
+sudo make install 
+```  
+### FFmpeg downloaden, konfigurieren (incl. SRT einbinden), kompilieren und installieren: ###
 ```
+cd /home/pi/ffmpeg_sources  
+sudo git clone https://github.com/FFmpeg/FFmpeg.git  
+cd FFmpeg  
+PATH="$HOME/bin:$PATH"
+# sudo export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
+sudo ./configure --arch=armel --target-os=linux --enable-gpl --enable-libmp3lame --enable-libfdk-aac --enable-libfreetype --enable-libx264 --enable-libx265  --enable-omx --enable-omx-rpi --enable-nonfree --enable-mmal --enable-libsrt
+sudo make
+sudo make install
+```  
 
+### testen ###
+```
+ffmpeg -version	(Version anzeigen)  
+ffmpeg -formats	(verfügbare Formate anzeigen)  
+ffmpeg -codecs	(verfügbare Codecs anzeigen)  
+```  
 ffmpeg ist jetzt nicht installiert, aber kompiliert und kann im aktuellen Arbeitsverzeichnis ausgeführt werden. 
 Das müsste jetzt /home/pi/ffmpeg sein.
 
