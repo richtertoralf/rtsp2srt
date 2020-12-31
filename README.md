@@ -87,5 +87,7 @@ ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c
 - `ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'`   
 
 ### auf der StreamBox
+- `srt-live-transmit 'srt://192.168.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
+oder  
 - `srt-live-transmit 'srt://172.16.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
 - in OBS eine Medienquelle einfügen mit der URL: udp://localhost:50052  
