@@ -123,7 +123,9 @@ start_rtsp2srt() {
 ### rtsp-Stream auf dem Raspi empfangen und als SRT-Stream senden ###
 - `ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'`   
 
-### auf der StreamBox
+### auf der StreamBox ###
+**Beispiele:**  
+
 - `srt-live-transmit 'srt://192.168.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
 oder  
 - `srt-live-transmit 'srt://172.16.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
@@ -131,11 +133,33 @@ oder
 
 ## Portadressierung ##
 
-Die Raspberry Pi in den AkkuBoxen adressieren ihren Kamerastream an die StreamBox über folgende Ports:  
+Die Raspberry Pi (192.168.95.41 bis .49) in den AkkuBoxen adressieren ihren Kamerastream an die StreamBox (192.168.95.6) über folgende Ports:  
 
 |    Kamera-IP  | StreamBox Eingangsport vom Raspi | StreamBox localhost Port für OBS |  
 | :-------------| ----------------------:| --------------------------------:|  
-| 192.168.95.51 | 40041 | 50051 |  
-| 192.168.95.52 | 40042 | 50052 |
+| 192.168.95.51 | 40051 | 50051 |  
+| 192.168.95.52 | 40052 | 50052 |
 |  -"- | -"- | -"- |
-| 192.168.95.59 | 40049 | 50051 |
+| 192.168.95.59 | 40059 | 50051 |
+Die Ports haben einen "Basisteil" 400 oder 500 und einen "Kamerateil" 51 bis 59.
+
+Die StreamBox hat die Adressen 192.168.95.6 im LAN und 172.16.95.6 im VPN. Sie kann über beide Adressen erreicht werden.
+Die App "srt-live-transmit" horcht auf beiden Adressen auf allen möglichen Kameraports und leitete eingehende Streams auf die entsprechenden localhost-Ports für OBS weiter.
+Die jeweiligen srt-live-stream Instanzen laufen entweder ständig oder werden nur gestartet, wenn die jeweiligen Kameras (per ping) erreichbar sind.
+
+Beispiel für den Start zweier Instanzen für eine Kamera:
+```
+#!/usr/bin/bash  
+
+quelle51LAN='srt://192.168.95.6:40052?mode=listener&latency=1000'  
+quelle51VPN='srt://172.16.95.6:40052?mode=listener&latency=1000'  
+ziel51='udp://localhost:50052'  
+
+echo "Quellen51: " $quelle51LAN und $quelle51VPN  
+echo "Ziel51:    " $ziel51  
+
+exec /usr/local/bin/srt-live-transmit ${quelle51LAN} ${ziel51} &>/dev/null &  
+exec /usr/local/bin/srt-live-transmit ${quelle51VPN} ${ziel51} &>/dev/null  
+```  
+
+
