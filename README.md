@@ -86,15 +86,18 @@ ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c
 
 ```
 # StreamVariablen für rtsp2srt  
-
+# Kamerabesonderheiten (müssten, bei der Verwendung verschiedener Kameras jeweils pro Kamera angepasst werden):
 userandpassword='admin:admin'  
 rtspcamspec=':554/1/h264major'  
+# FFmpeg-Einstellungen; Quelle:
 encodflags='-loglevel panic -stats -flags low_delay -fflags discardcorrupt'  
+# FFmpeg-Einstellungen (SRT); Ziel:
 decodflags='copy -f mpegts'  
 srtflags='?mode=caller&transtype=live&latency=100000'  
 # Die folgenden Variablen werden hier erstmals mit einem Wert belegt und    
 # im Schell-Skript GatewaySet.sh zur Laufzeit u.a. in der Funktion start_rtsp2srt() überschrieben.
-# Änderungen müssen denzufolge jeweils auch im Quelltext GatewaySet.sh durchgeführt werden! 
+# Änderungen der Variablennamen müssten demzufolge jeweils auch im Quelltext GatewaySet.sh durchgeführt werden! 
+# Deswegen: Finger hier weg!
 streamsource=rtsp://${userandpassword}@${SourceCamIP}${rtspcamspec}
 streamtargetport=400${SourceCamIP##*.}
 streamtarget=srt://${StreamTargetIP}:${streamtargetport}
