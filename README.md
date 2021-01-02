@@ -81,6 +81,24 @@ Aufruf auf dem Raspi mit z.B.:
 ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'
 ```
 
+### Integration im Skript GatewaySet.sh ###
+**In der Konfigurationsdatei GatewaySet.conf können Anpassungen zur Optimierung vorgenommen werden:**
+
+**Im Linux Shell Skript wird folgende Funktion verwendet:**
+```
+start_rtsp2srt() {  
+    streamsource=rtsp://${userandpassword}@${SourceCamIP}${rtspcamspec}  
+    streamtargetport=400${SourceCamIP##*.}  
+    streamtarget=srt://${StreamTargetIP}:${streamtargetport}  
+    echo "Ich starte FFmpeg mit folgendem String:"  
+    flag_stream=1  
+    echo ffmpeg $encodflags -i $streamsource -c $decodflags $streamtarget $srtflags  
+    ffmpeg $encodflags -i $streamsource -c $decodflags $streamtarget$srtflags   
+    # Problem: FFmpeg bricht bei unserer Variante, bei einem Netzwerkfehler  
+    # NICHT ab und muss deshalb extern beendet und neu gestartet werden.  
+}
+```
+
 ## Installation auf der StreamBox (Ubuntu 20.04 LTS) ##
 
 ## Testen ##
