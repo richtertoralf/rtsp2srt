@@ -84,7 +84,23 @@ ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c
 ### Integration im Skript GatewaySet.sh ###
 **In der Konfigurationsdatei GatewaySet.conf können Anpassungen zur Optimierung vorgenommen werden:**
 
-**Im Linux Shell Skript wird folgende Funktion verwendet:**
+```
+# StreamVariablen für rtsp2srt  
+
+userandpassword='admin:admin'  
+rtspcamspec=':554/1/h264major'  
+encodflags='-loglevel panic -stats -flags low_delay -fflags discardcorrupt'  
+decodflags='copy -f mpegts'  
+srtflags='?mode=caller&transtype=live&latency=100000'  
+# Die folgenden Variablen werden hier erstmals mit einem Wert belegt und    
+# im Schell-Skript GatewaySet.sh zur Laufzeit u.a. in der Funktion start_rtsp2srt() überschrieben.
+# Änderungen müssen denzufolge jeweils auch im Quelltext GatewaySet.sh durchgeführt werden! 
+streamsource=rtsp://${userandpassword}@${SourceCamIP}${rtspcamspec}
+streamtargetport=400${SourceCamIP##*.}
+streamtarget=srt://${StreamTargetIP}:${streamtargetport}
+```
+
+**Im Linux Shell Skript GatewaySet.sh wird folgende Funktion zum Start von FFmpeg verwendet:**
 ```
 start_rtsp2srt() {  
     streamsource=rtsp://${userandpassword}@${SourceCamIP}${rtspcamspec}  
@@ -94,8 +110,7 @@ start_rtsp2srt() {
     flag_stream=1  
     echo ffmpeg $encodflags -i $streamsource -c $decodflags $streamtarget $srtflags  
     ffmpeg $encodflags -i $streamsource -c $decodflags $streamtarget$srtflags   
-    # Problem: FFmpeg bricht bei unserer Variante, bei einem Netzwerkfehler  
-    # NICHT ab und muss deshalb extern beendet und neu gestartet werden.  
+    # Achtung, innerhalb eines Shell-Scriptes sind Variablen in einer Funktion NICHT lokal gekapselt, sondern sind global im gesamten Skript verfügbar.   
 }
 ```
 
