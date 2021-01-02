@@ -140,7 +140,8 @@ Die Raspberry Pi (192.168.95.41 bis .49) in den AkkuBoxen adressieren ihren Kame
 | 192.168.95.51 | 40051 | 50051 |  
 | 192.168.95.52 | 40052 | 50052 |
 |  -"- | -"- | -"- |
-| 192.168.95.59 | 40059 | 50051 |
+| 192.168.95.59 | 40059 | 50051 |  
+
 Die Ports haben einen "Basisteil" 400 oder 500 und einen "Kamerateil" 51 bis 59.
 
 Die StreamBox hat die Adressen 192.168.95.6 im LAN und 172.16.95.6 im VPN. Sie kann über beide Adressen erreicht werden.
