@@ -144,23 +144,23 @@ Die Raspberry Pi (192.168.95.41 bis .49) in den AkkuBoxen adressieren ihren Kame
 
 Die Ports haben einen "Basisteil" 400 oder 500 und einen "Kamerateil" 51 bis 59.
 
-Die StreamBox hat die Adressen 192.168.95.6 im LAN und 172.16.95.6 im VPN. Sie kann über beide Adressen erreicht werden.
-Die App "srt-live-transmit" horcht auf beiden Adressen auf allen möglichen Kameraports und leitete eingehende Streams auf die entsprechenden localhost-Ports für OBS weiter.
-Die jeweiligen srt-live-stream Instanzen laufen entweder ständig oder werden nur gestartet, wenn die jeweiligen Kameras (per ping) erreichbar sind.
+Die StreamBox hat die Adressen 192.168.95.6 im LAN und 172.16.95.6 im VPN. Sie kann über beide Adressen erreicht werden. Die App "srt-live-transmit" horcht auf beiden Adressen auf allen möglichen Kameraports und leitete eingehende Streams auf die entsprechenden localhost-Ports für OBS weiter. Die jeweiligen srt-live-stream Instanzen laufen entweder ständig oder werden nur gestartet, wenn die jeweiligen Kameras (per ping) erreichbar sind.
 
 Beispiel für den Start zweier Instanzen für eine Kamera:
 ```
 #!/usr/bin/bash  
 
-quelle51LAN='srt://192.168.95.6:40052?mode=listener&latency=1000'  
-quelle51VPN='srt://172.16.95.6:40052?mode=listener&latency=1000'  
-ziel51='udp://localhost:50052'  
+quelle52LAN='srt://192.168.95.6:40052?mode=listener&latency=1000'  
+quelle52VPN='srt://172.16.95.6:40052?mode=listener&latency=1000'  
+ziel52='udp://localhost:50052'  
 
-echo "Quellen51: " $quelle51LAN und $quelle51VPN  
-echo "Ziel51:    " $ziel51  
+echo "LAN + VPN Quelle Kamera 52: " $quelle52LAN und $quelle51VPN  
+echo "OBS-Ziel für Kamera 52:     " $ziel52  
 
-exec /usr/local/bin/srt-live-transmit ${quelle51LAN} ${ziel51} &>/dev/null &  
-exec /usr/local/bin/srt-live-transmit ${quelle51VPN} ${ziel51} &>/dev/null  
+exec /usr/local/bin/srt-live-transmit ${quelle52LAN} ${ziel51} &>/dev/null &  
+exec /usr/local/bin/srt-live-transmit ${quelle52VPN} ${ziel51} &>/dev/null  
+
+# Adressen und Modi z.B. "mode=listener&latency=..." in separate Variablen und in .conf-File ausgliedern
 ```  
 
 
