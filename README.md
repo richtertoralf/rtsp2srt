@@ -1,4 +1,9 @@
+[![Latest release][release-badge]][github releases]
+[![Build Status Linux and macOS][travis-badge]][travis]
+[![Build Status Windows][appveyor-badge]][appveyor]
+
 # rtsp2srt
+Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.
 Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zur StreamBox senden.
 Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, also unserer StreamBox auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden.
 
