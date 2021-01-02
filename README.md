@@ -128,3 +128,14 @@ start_rtsp2srt() {
 oder  
 - `srt-live-transmit 'srt://172.16.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
 - in OBS eine Medienquelle einfügen mit der URL: udp://localhost:50052  
+
+## Portadressierung ##
+
+Die Raspberry Pi in den AkkuBoxen adressieren ihren Kamerastream an die StreamBox über folgende Ports:  
+
+|    Kamera-IP  | StreamBox Eingangsport vom Raspi | StreamBox localhost Port für OBS |  
+| :-------------| ----------------------:| --------------------------------:|  
+| 192.168.95.51 | 40041 | 50051 |  
+| 192.168.95.52 | 40042 | 50052 |
+|  -"- | -"- | -"- |
+| 192.168.95.59 | 40049 | 50051 |
