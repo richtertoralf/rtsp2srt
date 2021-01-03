@@ -1,4 +1,4 @@
-# rtsp2srt (Raspberry Pi)
+# rtsp2srt (für Raspberry Pi)
 Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.
 Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zur StreamBox senden.
 Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, also unserer StreamBox auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden. Alternativ kann auf der StreamBox auch die [Haivision App srt-live-transmit](https://github.com/Haivision/srt/blob/master/docs/srt-live-transmit.md) genutzt werden.  
@@ -75,6 +75,7 @@ ffmpeg -version	(Version anzeigen)
 ffmpeg -formats	(verfügbare Formate anzeigen)  
 ffmpeg -codecs	(verfügbare Codecs anzeigen) 
 ffmpeg -protocols (verfügbare Protokolle anzeigen)
+ffmpeg -protocols | grep srt
 ```  
 
 Aufruf auf dem Raspi mit z.B.:
@@ -118,22 +119,18 @@ start_rtsp2srt() {
 }
 ```
 
-## Installation auf der StreamBox (Ubuntu 20.04 LTS) ##
-
 ## Testen ##
 ### rtsp-Stream auf dem Raspi empfangen und als SRT-Stream senden ###
+**Beispiele mit der Kamera 52 als Quelle:**  
 - `ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'`   
 
-### auf der StreamBox ###
-**Beispiele:**  
-
+### auf der StreamBox empfangen ###  
 - `srt-live-transmit 'srt://192.168.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
 oder  
 - `srt-live-transmit 'srt://172.16.95.6:40052?mode=listener&latency=1000' udp://localhost:50052`  
 - in OBS eine Medienquelle einfügen mit der URL: udp://localhost:50052  
 
 ## Portadressierung ##
-
 Die Raspberry Pi (192.168.95.41 bis .49) in den AkkuBoxen adressieren ihren Kamerastream an die StreamBox (192.168.95.6) über folgende Ports:  
 
 |    Kamera-IP  | StreamBox Eingangsport vom Raspi | StreamBox localhost Port für OBS |  
@@ -147,7 +144,7 @@ Die Ports haben einen "Basisteil" 400 oder 500 und einen "Kamerateil" 51 bis 59.
 
 Die StreamBox hat die Adressen 192.168.95.6 im LAN und 172.16.95.6 im VPN. Sie kann über beide Adressen erreicht werden. Die App "srt-live-transmit" horcht auf beiden Adressen auf allen möglichen Kameraports und leitete eingehende Streams auf die entsprechenden localhost-Ports für OBS weiter. Die jeweiligen srt-live-stream Instanzen laufen entweder ständig oder werden nur gestartet, wenn die jeweiligen Kameras (per ping) erreichbar sind.
 
-Beispiel für den Start zweier Instanzen für eine Kamera:
+Beispiel für den Start zweier Instanzen (LAN und VPN) für die Kamera 52 (192.168.95.52):
 ```
 #!/usr/bin/bash  
 
