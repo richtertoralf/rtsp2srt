@@ -15,9 +15,10 @@ In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch d
 VLC-Player inklusive FFmpeg entfernen:  
 ```
 sudo apt purge vlc* && sudo apt purge ffmpeg*  
-sudo apt autoremove  
+# sudo apt autoremove  
 ```
-und VLC-Symbol aus Startmenu entfernen: `sudo rm /usr/share/raspi-ui-overrides/applications/vlc.desktop`  
+und VLC-Symbol aus Startmenu entfernen:  
+`sudo rm /usr/share/raspi-ui-overrides/applications/vlc.desktop`  
 
 Die Installation der Quellpakete für FFmpeg inklusive SRT setzt die folgenden Schritte voraus:  
 - Bereitstellung aller notwendigen Tools und Bibliotheken, also Download der Abhängigkeiten (Dependencies)
@@ -46,7 +47,7 @@ cd fdk-aac
 autoreconf -fiv  
 ./configure  
 make  
-make install  
+sudo make install  
 ```  
 
 ### SRT von Haivision downloaden, kompilieren und installieren (inklusive srt-live-transmit): ###
@@ -59,8 +60,7 @@ PATH="$HOME/bin:$PATH"
 sudo ./configure  
 sudo make  
 sudo make install 
-```  
--> obiges läuft leider nicht sauber durch :-(  
+```   
 
 ### FFmpeg downloaden, konfigurieren (inkl. SRT-Bibliothek einbinden), kompilieren und installieren: ###
 ```
