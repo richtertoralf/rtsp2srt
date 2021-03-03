@@ -31,9 +31,14 @@ sudo apt update
 sudo apt install autoconf automake build-essential cmake pkg-config texinfo wget git yasm nasm tcl tclsh libtool libva-dev libass-dev libfreetype6-dev libgnutls28-dev libsdl2-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev zlib1g-dev libssl-dev libx264-dev libx265-dev libnuma-dev libx265-doc libvpx-dev libmp3lame-dev libopus-dev  
 ``` 
 (Nicht alle der obigen Pakete werden für unser kleines Projekt benötigt. Ich weiß allerdings nicht, welche entbehrlich sind ;-)  
+Fehler 03.03.2021: `Die folgenden Pakete haben unerfüllte Abhängigkeiten: libsdl2-dev` 
+Außerdem fehlte noch `autoreconf` 
+`sudo apt search autoreconf`  
+`sudo apt install dh-autoreconf`  
 Beim Raspberry Pi sind z.B. das Audio-Paket libfdk-aac noch nicht mit `apt` installierbar und muss extra kompiliert werden.  
 [Infos hier im FFmpeg CompilitionGuide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu "FFmpeg CompilitionGuide")  
 ```
+mkdir /home/pi/ffmpeg_sources
 cd /home/pi/ffmpeg_sources  
 git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstorsjo/fdk-aac  
 PATH="$HOME/bin:$PATH"  
@@ -41,7 +46,7 @@ cd fdk-aac
 autoreconf -fiv  
 ./configure  
 make  
-sudo make install  
+make install  
 ```  
 
 ### SRT von Haivision downloaden, kompilieren und installieren (inklusive srt-live-transmit): ###
@@ -55,6 +60,8 @@ sudo ./configure
 sudo make  
 sudo make install 
 ```  
+-> obiges läuft leider nicht sauber durch :-(  
+
 ### FFmpeg downloaden, konfigurieren (inkl. SRT-Bibliothek einbinden), kompilieren und installieren: ###
 ```
 cd /home/pi/ffmpeg_sources  
