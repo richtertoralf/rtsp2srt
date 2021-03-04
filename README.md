@@ -175,4 +175,36 @@ exec /usr/local/bin/srt-live-transmit ${quelle52VPN} ${ziel51} &>/dev/null
 # Adressen und Modi z.B. "mode=listener&latency=..." in separate Variablen und in .conf-File ausgliedern
 ```  
 
+### Beispiel für ein Skript auf der Empfängerseite (Ubuntu Desktop) ###
+In diesem Beispiel wird auf mehrere Streams gewartet und diese per UDP für OBS weitergeleitet. 
+Es wird dazu srt-live-transmit verwendet.  
+```
+#!/bin/bash  
+
+# StreamBox  
+hostIPLAN='192.168.95.6'  
+hostIPVPN='172.16.95.6'  
+
+# srt Parameter  
+parLAN='?mode=listener&latency=1000'  
+parVPN='?mode=listener&latency=1000'  
+
+# Kamera IP-Adressen (mit jeweils einem Leerzeichen getrennt) 
+CamIP=(192.168.95.51 192.168.95.52 192.168.95.53 192.168.95.54 192.168.95.55 192.168.95.56)  
+# echo "Anzahl der Cams in Array CamIP: "${#CamIP[@]}   
+
+# startet srt-live-transmit für alle im Array aufgelisteten Kameras  
+for cam in ${CamIP[*]}  
+do  
+	camNr=${cam##*.}  
+	sourceLAN="srt://$hostIPLAN:400$camNr$parLAN"  
+	sourceVPN="srt://$hostIPVPN:400$camNr$parVPN"  
+	obs="udp://localhost:500$camNr"   
+  echo "Ich starte srt-live-transmit für Kamera $camNr mit Ziel $obs."
+	# ich warte auf Stream aus LAN
+	exec /usr/local/bin/srt-live-transmit ${sourceLAN} ${obs} &>/dev/null &
+	# ich warte auf Stream aus VPN über Cloud-VPN Server
+	exec /usr/local/bin/srt-live-transmit ${sourceVPN} ${obs} &>/dev/null &
+done
+```
 
