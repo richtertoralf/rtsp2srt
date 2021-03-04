@@ -15,7 +15,7 @@ In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch d
 VLC-Player inklusive FFmpeg entfernen:  
 ```
 sudo apt purge vlc* && sudo apt purge ffmpeg*  
-# sudo apt autoremove  
+sudo apt autoremove  
 ```
 und VLC-Symbol aus Startmenu entfernen:  
 `sudo rm /usr/share/raspi-ui-overrides/applications/vlc.desktop`  
@@ -28,14 +28,11 @@ Die Installation der Quellpakete für FFmpeg inklusive SRT setzt die folgenden S
 
 ### Download und Installation der Abhängigkeiten ###
 ```
-sudo apt update  
-sudo apt install autoconf automake build-essential cmake pkg-config texinfo wget git yasm nasm tcl tclsh libtool libva-dev libass-dev libfreetype6-dev libgnutls28-dev libsdl2-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev zlib1g-dev libssl-dev libx264-dev libx265-dev libnuma-dev libx265-doc libvpx-dev libmp3lame-dev libopus-dev  
+sudo apt update && sudo apt upgrade
+sudo apt install autoconf dh-autoreconf automake build-essential cmake pkg-config texinfo wget git yasm nasm tcl tclsh libtool libtheora-dev libva-dev libgpac-dev libass-dev libfreetype6-dev libgnutls28-dev libsdl2-dev libsdl1.2-dev libvdpau-dev libvorbis-dev libxcb1-dev libxext-dev libx11-dev libxfixes-dev libxcb-shm0-dev libxcb-xfixes0-dev zlib1g-dev libssl-dev libx264-dev libx265-dev libnuma-dev libx265-doc libvpx-dev libmp3lame-dev libopus-dev  texi2html zlib1g-dev libopus-dev
 ``` 
-(Nicht alle der obigen Pakete werden für unser kleines Projekt benötigt. Ich weiß allerdings nicht, welche entbehrlich sind ;-)  
-Fehler 03.03.2021: `Die folgenden Pakete haben unerfüllte Abhängigkeiten: libsdl2-dev` 
-Außerdem fehlte noch `autoreconf` 
-`sudo apt search autoreconf`  
-`sudo apt install dh-autoreconf`  
+Nicht alle der obigen Pakete werden für unser kleines Projekt benötigt. Ich weiß allerdings nicht, welche entbehrlich sind ;-)  
+  
 Beim Raspberry Pi sind z.B. das Audio-Paket libfdk-aac noch nicht mit `apt` installierbar und muss extra kompiliert werden.  
 [Infos hier im FFmpeg CompilitionGuide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu "FFmpeg CompilitionGuide")  
 ```
@@ -43,6 +40,7 @@ mkdir /home/pi/ffmpeg_sources
 cd /home/pi/ffmpeg_sources  
 git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstorsjo/fdk-aac  
 PATH="$HOME/bin:$PATH"  
+export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"   
 cd fdk-aac  
 autoreconf -fiv  
 ./configure  
@@ -53,10 +51,11 @@ sudo make install
 ### SRT von Haivision downloaden, kompilieren und installieren (inklusive srt-live-transmit): ###
 ```
 mkdir -p /home/pi/ffmpeg_sources
-cd /home/pi/ffmpeg_sources
-sudo git clone https://github.com/Haivision/srt  
-cd srt  
+cd /home/pi/ffmpeg_sources  
+sudo git -C srt pull 2> /dev/null || git clone --depth 1  https://github.com/Haivision/srt  
 PATH="$HOME/bin:$PATH"
+export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" 
+cd srt
 sudo ./configure  
 sudo make  
 sudo make install 
@@ -65,10 +64,10 @@ sudo make install
 ### FFmpeg downloaden, konfigurieren (inkl. SRT-Bibliothek einbinden), kompilieren und installieren: ###
 ```
 cd /home/pi/ffmpeg_sources  
-sudo git clone https://github.com/FFmpeg/FFmpeg.git  
-cd FFmpeg  
+sudo git -C FFmpeg pull 2> /dev/null || git clone https://github.com/FFmpeg/FFmpeg.git  
 PATH="$HOME/bin:$PATH"  
-# sudo export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"  
+export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"  
+cd FFmpeg
 sudo ./configure --extra-ldflags="-latomic" --arch=armel --target-os=linux --enable-gpl --enable-libmp3lame --enable-libfdk-aac --enable-libfreetype --enable-libx264 --enable-libx265  --enable-omx --enable-omx-rpi --enable-nonfree --enable-mmal --enable-libsrt  
 sudo make  
 sudo make install  
