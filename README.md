@@ -200,7 +200,7 @@ do
 	sourceLAN="srt://$hostIPLAN:400$camNr$parLAN"  
 	sourceVPN="srt://$hostIPVPN:400$camNr$parVPN"  
 	obs="udp://localhost:500$camNr"   
-  echo "Ich starte srt-live-transmit für Kamera $camNr mit Ziel $obs."
+	echo "Ich starte srt-live-transmit für Kamera $camNr mit Ziel $obs."
 	# ich warte auf Stream aus LAN
 	exec /usr/local/bin/srt-live-transmit ${sourceLAN} ${obs} &>/dev/null &
 	# ich warte auf Stream aus VPN über Cloud-VPN Server
