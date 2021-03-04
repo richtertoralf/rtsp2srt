@@ -84,9 +84,17 @@ ffmpeg -protocols (verfügbare Protokolle anzeigen)
 ffmpeg -protocols | grep srt
 ```  
 
-Aufruf auf dem Raspi mit z.B.:
+Weiterleitung eines RTSP-Kamerastreams mit niedriger Latenz:  
 ```
-ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=1000000'
+ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=100'  
+```
+oder mit besserer Qualität (Standarteinstellungen) / Raspberry Pi 4 schafft damit auch 50fps: 
+```
+ffmpeg -i rtsp://admin:admin@192.168.95.52:554/1/h264major -c copy -f mpegts srt://192.168.95.6:40052
+```  
+Bildschirmaufnahme [Quelle: https://trac.ffmpeg.org/wiki/Capture/Desktop](https://trac.ffmpeg.org/wiki/Capture/Desktop):  
+```
+ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 -f mpegts srt://192.168.95.6:40052
 ```
 
 ### Integration im Skript GatewaySet.sh ###
