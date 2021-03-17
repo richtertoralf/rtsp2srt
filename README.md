@@ -96,5 +96,6 @@ Bildschirmaufnahme [Quelle: https://trac.ffmpeg.org/wiki/Capture/Desktop](https:
 ```
 ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 -f mpegts srt://192.168.95.6:40052
 ```
-## weitere Infos: ##
-[SRT-Kochbuch](https://srtlab.github.io/srt-cookbook/apps/ffmpeg/)
+## weitere Infos: ##  
+- [SRT-Kochbuch: FFmpeg](https://srtlab.github.io/srt-cookbook/apps/ffmpeg/)
+- [SRT-Kochbuch: OBS](https://srtlab.github.io/srt-cookbook/apps/obs-studio/)
