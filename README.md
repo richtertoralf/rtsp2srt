@@ -1,7 +1,7 @@
 # rtsp2srt (für Raspberry Pi)
 Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.
-Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zur StreamBox senden.
-Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, also unserer StreamBox auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden. Alternativ kann auf der StreamBox auch die [Haivision App srt-live-transmit](https://github.com/Haivision/srt/blob/master/docs/srt-live-transmit.md) genutzt werden.  
+Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zu einem Computer senden.
+Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden. Alternativ kann auf dem Computer mit OBS auch die [Haivision App srt-live-transmit](https://github.com/Haivision/srt/blob/master/docs/srt-live-transmit.md) genutzt werden.  
 **Die Funktion start_rtsp2srt läuft auf den Raspberry Pi innerhalb des Scriptes GatewaySet.sh und wird in der Datei GatewaySet.conf konfiguriert.**
 
 ![rtsp2srt](ffmpeg-srt.png "Streamtransport") 
@@ -86,11 +86,11 @@ ffmpeg -protocols | grep srt
 
 Weiterleitung eines RTSP-Kamerastreams mit niedriger Latenz:  
 ```
-ffmpeg -fflags nobuffer -i 'rtsp://admin:admin@192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=100'  
+ffmpeg -fflags nobuffer -i 'rtsp://192.168.95.52:554/1/h264major' -c copy -f mpegts 'srt://172.16.95.6:40052?mode=caller&transtype=live&latency=100'  
 ```
 oder mit besserer Qualität (Standarteinstellungen) / Raspberry Pi 4 schafft damit auch 50fps: 
 ```
-ffmpeg -i rtsp://admin:admin@192.168.95.52:554/1/h264major -c copy -f mpegts srt://192.168.95.6:40052
+ffmpeg -i rtsp://192.168.95.52:554/1/h264major -c copy -f mpegts srt://192.168.95.6:40052
 ```  
 Bildschirmaufnahme [Quelle: https://trac.ffmpeg.org/wiki/Capture/Desktop](https://trac.ffmpeg.org/wiki/Capture/Desktop):  
 ```
