@@ -72,9 +72,37 @@ sudo ./configure --extra-ldflags="-latomic" --arch=armel --target-os=linux --ena
 sudo make  
 sudo make install  
 source ~/.profile  
-sudo reboot
+sudo reboot  
 ```  
-
+### Installation auf NanoPi Fire3, NanoPi Neo V1.4 ###
+- Bei der Installation als root, kann `sudo` entfallen. (Gilt für jedes Gerät ;-)   
+- Bei **FFmpeg ./configure** müssen RaspberryPi - spezifische Einstellungen weggelassen werden: `--enable-omx-rpi`  
+- Um die Hardwarebeschleunigung in FFmpeg zu nutzen, müssen gerätespezifische Einstellungen vorgenommen werden.
+- Für die NanoPi´s habe ich folgende Konfiguration, ohne Hardwarebeschleunigung verwendet: 
+`sudo ./configure --extra-ldflags="-latomic" --arch=armel --target-os=linux --enable-gpl --enable-libmp3lame --enable-libfdk-aac --enable-libfreetype --enable-libx264 --enable-libx265 --enable-nonfree --enable-libsrt`   
+Der NanoPi Fire3 hat acht CPU-Kerne und benötigt deshalb keine extra Hardwarebeschleunigung. Bei den RaspberryPi zero, 1, 2 und 3 macht die extra Beschleunigung jedoch Sinn. 
+#### Hintergrundinfos zur Hardwarebeschleunigung auf dem RaspberryPi ####
+Auch der Raspberry Pi bringt auf seinem SoC Hardware-Unterstützung für einige Algorithmen mit. Fehlen die, wird das Abspielen von Videos schwierig. Auch hier muss man FFmpeg selber übersetzen und die Optionen (»–enable-omx«, »–enable-omx-rpi«) aktivieren. Der Pi dekodiert auch einige Codecs in Hardware, braucht dafür bei Mpeg 2 aber eine Lizenz, die extra zu beschaffen ist. Beispielkonfiguration siehe Listing 1. Raspbian verlangte noch nach den Paketen »libmp3lame-dev« und »libx264-dev«.  
+**Listing 1**  
+Konfiguration für den Raspberry Pi  
+```
+01 ./configure --arch=armel \  
+02             --target-os=linux \  
+03             --enable-gpl \  
+04             --enable-omx \  
+05             --enable-omx-rpi \  
+06             --enable-mmal \  
+07             --enable-nonfree \  
+08             --enable-libmp3lame \  
+09             --enable-libx264  
+```  
+Der Aufruf zum Transkodieren eines Testvideos mit Hardwaresupport lautet dann z.B.:
+`./ffmpeg  -i ~/Testvideo.MPG -c:v h264_omx  Testvideo.MKV`  
+Willst du (bei vorhandener Lizenz) auch die Hardwaredekodierung verwenden, nutzt der folgenden Aufruf:
+`./ffmpeg -c:v mpeg2_mmal -i ~/Testvideo.MPG-c:v h264_omx Testvideo.MKV`  
+Hier muss manuell der richtigen Hardwaredekodierer passend zur vorliegenden Datei ausgewählt werden, wobei »h264_mmal« auch ohne Lizenz funktioniert.
+mit #> `ffmpeg -hwaccels` werden diverse Varianten angezeigt.  
+In unseren Test auf dem RaspberryPi 4 habe ich zwar die Optionen zur Hardware-Unterstützung mit aktiviert, bei der Streamanpassung von RTSP zu SRT aber nicht weiter beachtet.  
 ### testen ###
 ```
 ffmpeg -version	(Version anzeigen)  
