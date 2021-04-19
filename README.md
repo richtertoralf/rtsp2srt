@@ -3,6 +3,7 @@ Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die d
 Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zu einem Computer senden.
 Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden. Alternativ kann auf dem Computer mit OBS auch die [Haivision App srt-live-transmit](https://github.com/Haivision/srt/blob/master/docs/srt-live-transmit.md) genutzt werden.  
 **Die Funktion rtsp2srt läuft auf den Raspberry Pi´s in unserer Livestreamanwendung. Zusätzlich werden in unserer Anwendung Gateways verwaltet und WireGuard als VPN genutzt.**
+Du kannst diese Anleitung zum Compilieren von FFmpeg und SRT aber auch nutzen, um z.B. den RaspberryPi als SRT-Player zu nutzen. FFmpeg bringt die Anwendung FFplay mit. Damit kannst du dann SRT-Streams auf dem RaspberryPi abspielen.
 
 ![rtsp2srt](ffmpeg-srt.png "Streamtransport") 
 Streamumwandlung und Streamtransport 
@@ -12,7 +13,7 @@ FFmpeg unterstützt inzwischen standartgemäß das SRT-Protokoll.
 In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch die srt-Bibliothek **libsrt**. Deshalb muss (Stand 12/2020) FFmpeg selbst kompiliert werden und dabei z.B. das Konfigurationsflag `--enable-libsrt` gesetzt werden.  
 > Wenn **Raspberry Pi OS with desktop** als Betriebssystem installiert wurde, ist FFmpeg (ohne SRT), als Basis z.B. für den VLC-Player bereits in der Grundinstallation enthalten und sollte deinstalliert werden. Besser ist deshalb die Installation von **Raspberry Pi OS Lite ohne Anwendungsprogramme und ohne GUI** und die nachträgliche Installation aller benötigten Programmpakete!  
 
-VLC-Player inklusive FFmpeg entfernen:  
+Wenn du RaspberryPi mit einem Desktop installiert hast, solltest du zuerst den VLC-Player inklusive FFmpeg entfernen:  
 ```
 sudo apt purge vlc* && sudo apt purge ffmpeg*  
 sudo apt autoremove  
