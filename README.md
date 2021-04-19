@@ -103,7 +103,7 @@ Willst du (bei vorhandener Lizenz) auch die Hardwaredekodierung verwenden, nutzt
 `./ffmpeg -c:v mpeg2_mmal -i ~/Testvideo.MPG-c:v h264_omx Testvideo.MKV`  
 Hier muss manuell der richtigen Hardwaredekodierer passend zur vorliegenden Datei ausgewählt werden, wobei »h264_mmal« auch ohne Lizenz funktioniert.
 mit #> `ffmpeg -hwaccels` werden diverse Varianten angezeigt.  
-In unseren Test auf dem RaspberryPi 4 habe ich zwar die Optionen zur Hardware-Unterstützung mit aktiviert, bei der Streamanpassung von RTSP zu SRT aber nicht weiter beachtet.  
+In unseren Test auf dem RaspberryPi 4 habe ich zwar die Optionen zur Hardware-Unterstützung mit aktiviert, bei der Streamanpassung von RTSP zu SRT aber nicht weiter beachtet. Der RaspberryPi 4 hat eine Quad-Core CPU. Damit ist keine Hardwareunterstützung beim Dekodieren mehr notwendig. Die Qualität der Softwaredekodierung soll besser sein, als die einer Dekodierung mit Hardwareunterstützung.  
 ### testen ###
 ```
 ffmpeg -version	(Version anzeigen)  
