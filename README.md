@@ -27,6 +27,23 @@ Die Installation der Quellpakete für FFmpeg inklusive SRT setzt die folgenden S
 - Zusammenstellung der Pakete/Bibliotheken/Binärdateien (`make`)  
 - Installation (`sudo make install`)  
 
+### die schnelle Variante mit static build von Johan van Sickle ###
+Infos: https://www.johnvansickle.com/ffmpeg/faq/  
+Achtung: ffplay fehlt (Stand 20.08.2021)  
+
+Beispiel:  
+``` 
+# als normaler User **pi** ausführen:  
+cd ~  
+mkdir ~/snowgames/ffmpegsource  
+cd ffmpegsource/  
+wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz  
+tar xvf ffmpeg-release-armhf-static.tar.xz  
+cd ffmpegsource/ffmpeg-4.4-armhf-static
+sudo mv ffmpeg ffprobe /usr/local/bin/
+```
+
+**und jetzt ausführlich**
 ### Download und Installation der Abhängigkeiten ###
 ```
 sudo apt update && sudo apt upgrade
