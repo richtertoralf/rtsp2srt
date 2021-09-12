@@ -36,10 +36,10 @@ Beispiel:
 # als normaler User **pi** ausführen:  
 cd ~  
 mkdir ~/snowgames/ffmpegsource  
-cd ffmpegsource/  
+cd ~/snowgames/ffmpegsource/    
 wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz  
 tar xvf ffmpeg-release-armhf-static.tar.xz  
-cd ffmpegsource/ffmpeg-4.4-armhf-static
+cd ffmpeg-4.4-armhf-static/  
 sudo mv ffmpeg ffprobe /usr/local/bin/
 ```
 
