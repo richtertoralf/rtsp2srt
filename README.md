@@ -1,12 +1,20 @@
 # rtsp2srt (für Raspberry Pi)
-Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.
-Wir wollen uns die RTSP-Streams der IP-Kameras auf den Raspberry Pi holen und dort mittels ffmpeg ins SRT-Protokoll umwandeln und dann zu einem Computer senden.
-Dazu muss sowohl auf dem Raspberry Pi und dem großen Computer, auf der OBS läuft, ffmpeg mit integriertem SRT-Protokoll installiert werden. Alternativ kann auf dem Computer mit OBS auch die [Haivision App srt-live-transmit](https://github.com/Haivision/srt/blob/master/docs/srt-live-transmit.md) genutzt werden.  
-**Die Funktion rtsp2srt läuft auf den Raspberry Pi´s in unserer Livestreamanwendung. Zusätzlich werden in unserer Anwendung Gateways verwaltet und WireGuard als VPN genutzt.**  
-Du kannst diese Anleitung zum Compilieren von FFmpeg und SRT aber auch nutzen, um z.B. den RaspberryPi als SRT-Player zu nutzen. FFmpeg bringt die Anwendung FFplay mit. Damit kannst du dann SRT-Streams auf dem RaspberryPi abspielen.
+>Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.  
+
+In unseren Anwendungsfällen ist es z.B. notwendig, HD RTSP Streams mit 30 bis 60 fps von simplen Überwachungskameras in guter Qualität über Wifi-Netzwerke, 4G/LTE und das Internet weiterzuleiten. Außerdem gibt es Anwendungsfälle, bei dem wir Videostreams über das Internet versenden und und diese dann auf Bildschirmen die an RaspberryPis angeschlossen sind, anzeigen lassen wollen.
+
+Wir wollen uns zuerst den RTSP-Stream der IP-Kameras auf den RaspberryPi holen und dort mittels FFmpeg ins SRT-Protokoll umwandeln und dann zu einem entfernten Computer über ein Netzwerk senden. Wir verwenden dafür FFmpeg, da es sehr gut dokumentiert und OpenSource ist.  
+
+Dazu muss sowohl auf dem RaspberryPi und dem entfernten Computer, auf dem wir z.B. OBS-Studio laufen haben, FFmpeg mit der SRT-Bibliothek installiert werden. Alternativ kann auf dem entfernten Computer auch die [Haivision App srt-live-transmit](https://github.com/Haivision/srt/blob/master/docs/srt-live-transmit.md) als Empfänger genutzt werden. Es gibt inzwischen auch Fälle, bei denen OBS-Studio den SRT-Stream selbst empfangen kann.  
+Um das zu verstehen, sollte man sich die die "caller" und "listner" Konzepte von SRT anschauen.  
+
+**Die Funktion rtsp2srt läuft auf den Raspberry Pi´s in unserer Livestreamanwendung. Zusätzlich werden in unserer Anwendung Gateways verwaltet und WireGuard als VPN genutzt. In unserer Anwendung werden automatisch angeschlossene Kameras erkannt, es wird geprüft, auf welchem Weg (LAN, Wifi oder 4G/LTE) der enfernten Computer, auf dem OBS-Studio läuft, erreichbar ist. Je nach Qualität der Verbindung (Ping und Bandbreite) wird z.B. die Bitrate der IP-Kameras eingestellt.**  
+
+Du kannst diese Anleitung zum Installieren von FFmpeg und SRT aber auch nutzen, um z.B. den RaspberryPi als SRT-Player zu nutzen. FFmpeg bringt die Anwendung FFplay mit. Damit kannst du dann SRT-Streams auf dem RaspberryPi abspielen und auf einem Bildschirm ansehen.
 
 ![rtsp2srt](ffmpeg-srt.png "Streamtransport") 
-Streamumwandlung und Streamtransport 
+Beuispiel Streamumwandlung und Streamtransport 
+
 
 ## Installation auf dem Raspberry Pi (Raspian OS Buster)
 FFmpeg unterstützt inzwischen standartgemäß das SRT-Protokoll. 
