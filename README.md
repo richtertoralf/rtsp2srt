@@ -29,12 +29,6 @@ sudo apt autoremove
 und VLC-Symbol aus Startmenu entfernen:  
 `sudo rm /usr/share/raspi-ui-overrides/applications/vlc.desktop`  
 
-Die Installation der Quellpakete für FFmpeg inklusive SRT setzt die folgenden Schritte voraus:  
-- Bereitstellung aller notwendigen Tools und Bibliotheken, also Download der Abhängigkeiten (Dependencies)
-- Konfiguration (mit einem Konfigurationsskript, z.B. `./configure`)  
-- Zusammenstellung der Pakete/Bibliotheken/Binärdateien (`make`)  
-- Installation (`sudo make install`)  
-
 ### die schnelle Variante mit static build von Johan van Sickle ###
 Infos: https://www.johnvansickle.com/ffmpeg/faq/  
 Achtung: FFplay fehlt (Stand 20.08.2021) und bei der folgenden Methode wird die man-page (Handbuchseite) nicht mit installiert.  
@@ -53,7 +47,15 @@ cd ~
 rm -r ffmpegsource/  
 ```
 
+## Installation ##
 **und jetzt ausführlich**
+
+Die Installation der Quellpakete für FFmpeg inklusive SRT setzt die folgenden Schritte voraus:  
+- Bereitstellung aller notwendigen Tools und Bibliotheken, also Download der Abhängigkeiten (Dependencies)  
+- Konfiguration (mit einem Konfigurationsskript, z.B. `./configure`)  
+- Zusammenstellung der Pakete/Bibliotheken/Binärdateien (`make`)  
+- Installation (`sudo make install`)  
+
 ### Download und Installation der Abhängigkeiten ###
 ```
 sudo apt update && sudo apt upgrade
