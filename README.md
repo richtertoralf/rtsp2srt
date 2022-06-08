@@ -1,4 +1,5 @@
 # rtsp2srt (für Raspberry Pi)
+**Dieses Dokument ist nicht mehr aktuell!**  
 >Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.  
 
 In unseren Anwendungsfällen ist es z.B. notwendig, HD RTSP Streams mit 30 bis 60 fps von simplen Überwachungskameras in guter Qualität über Wifi-Netzwerke, 4G/LTE und das Internet weiterzuleiten. Außerdem gibt es Anwendungsfälle, bei dem wir Videostreams über das Internet versenden und und diese dann auf Bildschirmen die an RaspberryPis angeschlossen sind, anzeigen lassen wollen.
@@ -20,6 +21,8 @@ Beuispiel Streamumwandlung und Streamtransport
 FFmpeg unterstützt inzwischen standartgemäß das SRT-Protokoll. 
 In der Standartinstallation über `apt install ffmpeg` fehlt aktuell aber noch die srt-Bibliothek **libsrt**. Deshalb muss (Stand 12/2020) FFmpeg selbst kompiliert werden und dabei z.B. das Konfigurationsflag `--enable-libsrt` gesetzt werden.  
 > Wenn **Raspberry Pi OS with desktop** als Betriebssystem installiert wurde, ist FFmpeg (ohne SRT), als Basis z.B. für den VLC-Player bereits in der Grundinstallation enthalten und sollte deinstalliert werden. Besser ist deshalb die Installation von **Raspberry Pi OS Lite ohne Anwendungsprogramme und ohne GUI** und die nachträgliche Installation aller benötigten Programmpakete!  
+
+**Stand 06/2022: `sudo apt install ffmpeg` reicht aus! Die libsrt wird mitinstalliert.**
 
 Wenn du RaspberryPi mit einem Desktop installiert hast, solltest du zuerst den VLC-Player inklusive FFmpeg entfernen:  
 ```
@@ -79,6 +82,10 @@ sudo make install
 ```  
 
 ### SRT von Haivision downloaden, kompilieren und installieren (inklusive srt-live-transmit): ###
+**Stand 06/2022 kann ich mit `sudo apt install srt-tools` srt-live-transmit installieren. Es kommt die Version 1.4.4 mit. Diese Version hat aber einen Fehler, der auftritt wenn srt-live-transmit als Listener und OBS-Studio als Caller arbeiten. Die Version 1.5 soll den Fehler beheben!**
+
+Hier gibt es ein Video zur Installation: https://youtu.be/XOtUOVhussc  
+
 ```
 mkdir -p /home/pi/ffmpeg_sources
 cd /home/pi/ffmpeg_sources  
