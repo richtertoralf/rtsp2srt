@@ -97,6 +97,21 @@ sudo ./configure
 sudo make  
 sudo make install 
 ```   
+oder einfacher, getestet am 08.06.2022 auf eine RaspberryPi Zero 2 mit Ubuntu ohne GUI:
+```
+mkdir ~/projects
+cd projects
+git clone https://github.com/Haivision/srt.git
+cd srt
+./configure
+make
+sudo make install
+```
+```
+/usr/local/bin/srt-live-transmit -version
+Built with SRT Library version: 1.5.0
+SRT Library version: 1.5.0, clock type: GETTIME_MONOTONIC
+```
 
 ### FFmpeg downloaden, konfigurieren (inkl. SRT-Bibliothek einbinden), kompilieren und installieren: ###
 ```
