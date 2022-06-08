@@ -82,7 +82,7 @@ sudo make install
 ```  
 
 ### SRT von Haivision downloaden, kompilieren und installieren (inklusive srt-live-transmit): ###
-**Stand 06/2022 kann ich mit `sudo apt install srt-tools` srt-live-transmit installieren. Es kommt die Version 1.4.4 mit. Diese Version hat aber einen Fehler, der auftritt wenn srt-live-transmit als Listener und OBS-Studio als Caller arbeiten. Die Version 1.5 soll den Fehler beheben!**
+**Stand 06/2022 kann ich mit `sudo apt install srt-tools` srt-live-transmit installieren. Es kommt die Version 1.4.4 mit. Diese Version hat aber einen Fehler, der auftritt wenn srt-live-transmit als Listener und OBS-Studio als Caller arbeiten. Die Version 1.5 soll eigentlich diesen Fehler beheben!**
 
 Hier gibt es ein Video zur Installation: https://youtu.be/XOtUOVhussc  
 
@@ -113,6 +113,17 @@ sudo make install
 Built with SRT Library version: 1.5.0
 SRT Library version: 1.5.0, clock type: GETTIME_MONOTONIC
 ```
+Es gibt hier aber immer noch einen Fehler:
+```
+-> USB Audio -> ffmpeg -> srt-live-transmit -> via WLAN -> OBS-Studio (Version 27.2.4 / 64bit, windows 11) 
+ffmpeg auf dem RasperryPi als systemd-Service:
+/usr/local/bin/ffmpeg -hide_banner -loglevel quiet -f alsa -i plughw:1,0 -filter:a volume=1.2 -progress /var/www/html/snowgames/log.txt -f mpegts "srt://0.0.0.0:50067?mode=listener&transtype=live"
+pi@piZero-67:~/project/srt$ /usr/local/bin/srt-live-transmit srt://0.0.0.0:50067?mode=caller srt://0.0.0.0:60067?mode=listener
+Media path: 'srt://0.0.0.0:50067?mode=caller' --> 'srt://0.0.0.0:60067?mode=listener'
+Accepted SRT target connection
+ERROR: error: recvmsg: Connection does not exist
+```
+**Ich benötige die SRT-Statistiken (z.B. Bandbreite). FFmpeg bietet mir diese Statistiken noch nicht, deshalb der Umweg über srt-live-transmit. Leider funktioniert srt-live-transmit so nicht!**  
 
 ### FFmpeg downloaden, konfigurieren (inkl. SRT-Bibliothek einbinden), kompilieren und installieren: ###
 ```
