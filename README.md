@@ -99,6 +99,7 @@ sudo make install
 ```   
 oder einfacher, getestet am 08.06.2022 auf eine RaspberryPi Zero 2 mit Ubuntu ohne GUI:
 ```
+sudo apt install tclsh pkg-config cmake libssl-dev build-essential
 mkdir ~/projects
 cd projects
 git clone https://github.com/Haivision/srt.git
