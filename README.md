@@ -1,5 +1,12 @@
 # rtsp2srt (für Raspberry Pi)
 **Dieses Dokument ist nicht mehr aktuell!**  
+
+Dieses Projekt entstand um das Jahr 2018, in einer Phase, in der ich mich intensiv mit RaspberryPis, RTSP, SRT, ffmpeg und den Grundlagen robuster Videoübertragung beschäftigt habe. Ziel war es, einfache RTSP‑Kameras über instabile Netzwerke hinweg zuverlässig zu transportieren — damals ein spannendes Problem, das ich mit einem Raspberry Pi und einer schlanken ffmpeg‑Pipeline gelöst habe.
+
+Auch wenn die Anleitung heute technisch überholt ist, eignet sie sich, um die Grundprinzipien von Video‑Transportprotokollen zu verstehen und nachzuvollziehen, wie man RTSP‑Streams in SRT‑Streams umwandelt. Moderne Setups würde ich inzwischen mit MediaMTX, SRT/WHIP, HLS/DASH, automatisiertem Provisioning via cloud‑init, Ansible und Terraform umsetzen.
+
+Ich lasse dieses Repository bewusst unverändert stehen — als Lernmaterial, als Referenz und als Einblick in meine damaligen Gedankengänge.
+
 >Secure Reliable Transport (SRT) ist eine Open-Source-Transporttechnologie, die die Streaming-Leistung in Netzwerken wie z.B. dem Internet optimiert.  
 
 In unseren Anwendungsfällen ist es z.B. notwendig, HD RTSP Streams mit 30 bis 60 fps von simplen Überwachungskameras in guter Qualität über Wifi-Netzwerke, 4G/LTE und das Internet weiterzuleiten. Außerdem gibt es Anwendungsfälle, bei dem wir Videostreams über das Internet versenden und und diese dann auf Bildschirmen die an RaspberryPis angeschlossen sind, anzeigen lassen wollen.
