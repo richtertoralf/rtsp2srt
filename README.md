@@ -1,4 +1,10 @@
 # rtsp2srt (für Raspberry Pi)
+
+![Status](https://img.shields.io/badge/Status-Legacy%20Reference-blue)
+![Purpose](https://img.shields.io/badge/Purpose-Learning%20Repo-lightgrey)
+![Platform](https://img.shields.io/badge/Platform-Raspberry%20Pi-C51A4A?logo=raspberrypi&logoColor=white)
+![Stack](https://img.shields.io/badge/Stack-RTSP%20%E2%86%92%20SRT%20%7C%20FFmpeg-green)
+
 **Dieses Dokument ist nicht mehr aktuell!**  
 
 Dieses Projekt entstand um das Jahr 2018, in einer Phase, in der ich mich intensiv mit RaspberryPis, RTSP, SRT, ffmpeg und den Grundlagen robuster Videoübertragung beschäftigt habe. Ziel war es, einfache RTSP‑Kameras über instabile Netzwerke hinweg zuverlässig zu transportieren — damals ein spannendes Problem, das ich mit einem Raspberry Pi und einer schlanken ffmpeg‑Pipeline gelöst habe.
